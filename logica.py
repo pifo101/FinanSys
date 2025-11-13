@@ -4,13 +4,17 @@ import math
 
 # Calcula la cuota, interés total y total pagado
 def calcular_credito(monto, tasa_mensual, plazo_meses):
-    # tasa_mensual ya debe ser decimal (ej. 0.01 = 1%)
     if tasa_mensual == 0:
+        # Evita la división entre cero
         cuota = monto / plazo_meses
-    else:
-        cuota = (monto * tasa_mensual * (1 + tasa_mensual) ** plazo_meses) / ((1 + tasa_mensual) ** plazo_meses - 1)
+        interes_total = 0
+        total_pagado = monto
+        return cuota, interes_total, total_pagado
+
+    cuota = (monto * tasa_mensual * (1 + tasa_mensual) ** plazo_meses) / ((1 + tasa_mensual) ** plazo_meses - 1)
     total_pagado = cuota * plazo_meses
     interes_total = total_pagado - monto
+
     return cuota, interes_total, total_pagado
 
 # Genera la tabla de amortización
