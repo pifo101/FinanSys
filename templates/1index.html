@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Amortización</title>
+        <link rel="stylesheet" href="../static/styles.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Amortización</h1>
+
+    <form method="post">
+        <label>Monto: </label><input type="number" name="monto" step="0.01" required><br>
+        <label>Tasa anual (%): </label><input type="number" name="tasa" step="0.01" required><br>
+        <label>Plazo (meses): </label><input type="number" name="plazo" required><br>
+        <button type="submit">Calcular</button>
+    </form>
+
+    {% if tabla %}
+    <h2>Tabla de Amortización</h2>
+    <table>
+        <tr>
+            <th>Mes</th>
+            <th>Cuota</th>
+            <th>Interés</th>
+            <th>Capital</th>
+            <th>Saldo</th>
+        </tr>
+        {% for fila in tabla %}
+        <tr>
+            <td>{{ fila.mes }}</td>
+            <td>{{ fila.cuota }}</td>
+            <td>{{ fila.interes }}</td>
+            <td>{{ fila.capital }}</td>
+            <td>{{ fila.saldo }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>

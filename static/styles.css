@@ -1,0 +1,238 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.boton {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background: rgb(27, 209, 27);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+
+.boton:hover {
+    background: rgb(41, 226, 149); 
+}
+
+.Select_items{
+    width: 30%;
+    padding: 8px;
+    margin-top: 5px;
+    background-color: #44bdf5;
+    color: #000;
+}
+
+
+.radio_group {
+    margin-top: 10px;
+}
+
+.Label_pers {
+    margin-top: 15px;
+    font-weight: bold;
+    display: block;
+}
+
+
+.normal_text {
+    font-size: 16px;
+    font-family:  Arial, Helvetica, sans-serif;
+    padding: 0 50px;
+    line-height: 1.5;
+    text-align: justify;
+    margin: auto;
+}
+
+.Sub_title {
+    text-align: center;
+    color: #333;
+    margin-top: 80px;
+    font-size: 16;
+}
+
+.Sub_title4 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+    font-size: 14;
+}
+
+
+.centrar_elementos {
+    height: 270px;
+    width: 80%;
+    background: #ddd;;
+    margin: auto;
+    padding: 10px;
+    padding-bottom: 20px;
+}
+
+.Ref_buttons {
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 2px;
+    text-decoration: none;
+    background-color: #24a3df;
+    margin: 10px;
+    border-radius: 12px;
+
+}
+
+.Ref_buttons:hover {
+    background-color: #44bdf5;
+    color: black;
+    border: #24a3df;
+}
+
+
+
+/*color de barra top*/
+
+.topnav {
+    overflow: hidden;
+    background-color: #24a3df;
+}
+
+
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+
+
+/*Color con mouse encima */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+
+.logo-image {
+    display: block;
+    margin: 30px auto;
+    max-width: 100%;
+    height: 500px;
+    border: 3px solid black;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: #ddd;
+    padding: 8px;
+}
+
+
+.center-image {
+    display: block;
+    margin: 30px auto;
+    max-width: 100%;
+    height: auto;
+    border: 3px solid black;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: #ddd;
+    padding: 8px;
+}
+
+.razones_ul {
+    font-size: 16px;
+    font-family:  Arial, Helvetica, sans-serif;
+    padding: 0 50px;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.footer {
+    background-color: #24a3df;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 50px;
+    border-top: 3px solid #1b82b5;
+}
+
+.footer-content {
+    max-width: 900px;
+    margin: auto;
+    line-height: 1.6;
+    font-family: Arial, sans-serif;
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    color: #000;
+    background-color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* === Corrección de imágenes responsivas === */
+img {
+display: block !important;
+  max-width: 100% !important;  /* nunca más ancha que el contenedor */
+  height: auto !important;      /* mantiene proporciones correctas */
+  margin: 20px auto !important; /* centrada en pantalla */
+visibility: visible !important;
+opacity: 1 !important;
+}
+
+/* Limita el tamaño máximo en pantallas grandes */
+@media (min-width: 768px) {
+img {
+    max-width: 600px !important; /* no gigante en PC */
+}
+}
+
+/* Corrige comportamiento en pantallas pequeñas */
+@media (max-width: 767px) {
+img {
+    max-width: 95% !important;
+}
+}
+

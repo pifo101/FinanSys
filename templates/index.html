@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="text-center mb-4">
+  <h1 class="fw-bold text-primary">FinanSys</h1>
+  <img src="{{ url_for('static', filename='Pictures/Logo_FinanSys.jpeg') }}" 
+    alt="Logo FinanSys" 
+    class="img-fluid rounded shadow mt-3 mb-4" 
+    style="max-width: 400px;">
+  <h4 class="text-secondary">Usa el menú para navegar</h4>
+</div>
+
+<!-- Navegación interna -->
+<div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+  <a href="/calculadora" class="btn btn-primary btn-lg rounded-pill px-4">Calculadora de amortización</a>
+  <a href="/Cal_flex" class="btn btn-success btn-lg rounded-pill px-4">Calculadora flexible</a>
+  <a href="/Cal_mora" class="btn btn-warning btn-lg rounded-pill px-4">Calculadora de mora</a>
+  <a href="/acerca" class="btn btn-info btn-lg rounded-pill px-4 text-white">Nosotros</a>
+</div>
+
+<!-- Sección: Amortización -->
+<section class="mb-5">
+  <h2 class="text-center text-primary fw-bold mb-3">Calculadora de amortización</h2>
+  <p class="lead text-justify mx-5">
+    Las tablas de amortización son herramientas financieras que muestran los pagos de un préstamo a largo plazo. 
+    Son útiles para prever cuánto se pagará y durante cuánto tiempo al tramitar un crédito.
+  </p>
+
+  <h4 class="text-center text-secondary fw-semibold mt-4">Razones para usar la calculadora de amortización</h4>
+  <div class="mx-5">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Planificación financiera:</strong> Permite planificar tus pagos a futuro.</li>
+      <li class="list-group-item"><strong>Transparencia:</strong> Muestra cómo se distribuye tu pago entre capital e intereses.</li>
+      <li class="list-group-item"><strong>Comparación de opciones:</strong> Facilita elegir el préstamo más conveniente.</li>
+      <li class="list-group-item"><strong>Control de pagos:</strong> Ayuda a evitar retrasos y desorden financiero.</li>
+      <li class="list-group-item"><strong>Reducción de costos:</strong> Permite ver cómo los pagos extra reducen intereses.</li>
+    </ul>
+  </div>
+
+  <div class="text-center mt-4">
+    <img src="{{ url_for('static', filename='Pictures/Cal_amort.png') }}" 
+      alt="Ejemplo calculadora de amortización" 
+      class="img-fluid rounded shadow" 
+      style="max-width: 600px;">
+  </div>
+</section>
+
+<!-- Sección: Calculadora flexible -->
+<section class="mb-5">
+  <h2 class="text-center text-success fw-bold mb-3">Calculadora de crédito flexible</h2>
+  <p class="lead mx-5">
+    La calculadora flexible permite realizar cálculos financieros personalizados, adaptándose a distintos tipos de tasas e intervalos de tiempo. 
+    Ideal para evaluar escenarios antes de tomar decisiones sobre préstamos o inversiones.
+  </p>
+
+  <h4 class="text-center text-secondary fw-semibold mt-4">Ventajas de usar la calculadora flexible</h4>
+  <div class="mx-5">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Adaptabilidad:</strong> Se ajusta a tasas anuales, mensuales o diarias.</li>
+      <li class="list-group-item"><strong>Comparación inteligente:</strong> Permite observar cómo cambia la cuota según el plazo.</li>
+      <li class="list-group-item"><strong>Proyección realista:</strong> Refleja los resultados reales según tus condiciones.</li>
+      <li class="list-group-item"><strong>Aprendizaje financiero:</strong> Ayuda a comprender cómo influyen los intereses.</li>
+      <li class="list-group-item"><strong>Versatilidad:</strong> Funciona también para calcular inversiones o ahorros.</li>
+    </ul>
+  </div>
+
+  <div class="text-center mt-4">
+    <img src="{{ url_for('static', filename='Pictures/Cal_flexible.png') }}" 
+    alt="Ejemplo calculadora flexible" 
+    class="img-fluid rounded shadow" 
+    style="max-width: 600px;">
+  </div>
+</section>
+
+<!-- Sección: Mora -->
+<section class="mb-5">
+  <h2 class="text-center text-warning fw-bold mb-3">Calculadora de mora</h2>
+  <p class="lead mx-5">
+    Permite conocer cuánto dinero adicional se debe pagar cuando se retrasa un pago de préstamo o crédito. 
+    Ayuda a visualizar el impacto de los intereses moratorios.
+  </p>
+
+  <h4 class="text-center text-secondary fw-semibold mt-4">¿Por qué es importante calcular la mora?</h4>
+  <div class="mx-5">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Conciencia financiera:</strong> Comprender el costo de los atrasos motiva a pagar a tiempo.</li>
+      <li class="list-group-item"><strong>Negociación con entidades:</strong> Saber cuánto se debe ayuda en conversaciones con bancos.</li>
+      <li class="list-group-item"><strong>Prevención:</strong> Permite prever cómo los retrasos afectan tu presupuesto.</li>
+    </ul>
+  </div>
+
+  <h4 class="text-center text-secondary fw-semibold mt-4">Cómo se calcula la mora</h4>
+  <p class="mx-5">La mora se calcula según el monto atrasado, la tasa moratoria y los días de retraso:</p>
+
+  <div class="bg-light p-3 rounded shadow mx-5">
+    <pre class="text-dark">
+Interés por mora = (Monto pendiente × Tasa moratoria diaria × Días de atraso)
+    </pre>
+  </div>
+
+  <p class="mx-5">
+    Donde la tasa moratoria diaria se obtiene al dividir la tasa anual entre 365.
+  </p>
+
+  <h4 class="text-center text-secondary fw-semibold mt-4">Ejemplo rápido:</h4>
+  <p class="mx-5">
+    Si el pago atrasado es de Q1,000, la tasa moratoria anual es 12% y el retraso es de 15 días:
+  </p>
+
+  <div class="bg-light p-3 rounded shadow mx-5">
+    <pre class="text-dark">
+Interés por mora = 1000 × (0.12 / 365) × 15 = Q4.93
+Total a pagar = Q1004.93
+    </pre>
+  </div>
+
+  <div class="text-center mt-4">
+    <img src="{{ url_for('static', filename='Pictures/Cal_mora_result.png') }}" 
+    alt="Resultado de la calculadora de mora" 
+    class="img-fluid rounded shadow" 
+    style="max-width: 600px;">
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Calculadora flexible{% endblock %}
+{% block content %}
+
+<!-- Cargar Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5 p-4 bg-light rounded shadow">
+    <h1 class="text-center mb-4 text-primary fw-bold">Calculadora Flexible</h1>
+
+    <form method="POST">
+        <!-- Tipo de cálculo -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Selecciona el tipo de cálculo:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="opcion" id="radio1" value="1">
+                <label class="form-check-label" for="radio1">Monto final</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="opcion" id="radio2" value="2">
+                <label class="form-check-label" for="radio2">Monto inicial</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="opcion" id="radio3" value="3">
+                <label class="form-check-label" for="radio3">Rendimiento (%)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="opcion" id="radio4" value="4">
+                <label class="form-check-label" for="radio4">Tiempo</label>
+            </div>
+        </div>
+
+        <!-- Mensaje de advertencia -->
+        <div class="alert alert-warning small">
+            ⚠️ No llenes el campo del valor que deseas calcular (por ejemplo, si buscas el rendimiento, deja ese campo vacío).
+        </div>
+
+        <!-- Monto inicial / final -->
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="vi" class="form-label">Monto inicial (Q):</label>
+                <input type="number" step="any" name="vi" id="vi" class="form-control" placeholder="Ejemplo: 5000">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="vf" class="form-label">Monto final (Q):</label>
+                <input type="number" step="any" name="vf" id="vf" class="form-control" placeholder="Ejemplo: 10000">
+            </div>
+        </div>
+
+        <!-- Rendimiento y plazo -->
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="r" class="form-label">Rendimiento (%):</label>
+                <input type="number" step="any" name="r" id="r" class="form-control" placeholder="Ejemplo: 12">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="n" class="form-label">Plazo:</label>
+                <input type="number" step="any" name="n" id="n" class="form-control" placeholder="Ejemplo: 6">
+            </div>
+        </div>
+
+        <!-- Unidad de tasa -->
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="unidad_tasa" class="form-label">Unidad de tasa:</label>
+                <select name="unidad_tasa" id="unidad_tasa" class="form-select">
+                    <option value="anual">Anual</option>
+                    <option value="mensual">Mensual</option>
+                    <option value="diaria">Diaria</option>
+                </select>
+            </div>
+
+            <!-- Unidad de plazo -->
+            <div class="col-md-6 mb-3">
+                <label for="unidad_plazo" class="form-label">Unidad del plazo:</label>
+                <select name="unidad_plazo" id="unidad_plazo" class="form-select">
+                    <option value="años">Años</option>
+                    <option value="meses">Meses</option>
+                    <option value="días">Días</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success px-4">Calcular</button>
+            <a href="/" class="btn btn-secondary ms-2">Volver al menú</a>
+        </div>
+    </form>
+
+    <!-- Resultado -->
+    {% if resultado %}
+        <div class="alert alert-success text-center mt-4">
+            <strong>Resultado:</strong><br>{{ resultado }}
+        </div>
+    {% elif error %}
+        <div class="alert alert-danger text-center mt-4">
+            {{ error }}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Script: bloqueo automático del campo a calcular -->
+<script>
+    const radios = document.querySelectorAll('input[name="opcion"]');
+    const campos = { 1: 'vf', 2: 'vi', 3: 'r', 4: 'n' };
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            // Activar todos los campos
+            Object.values(campos).forEach(id => {
+                const campo = document.getElementById(id);
+                campo.disabled = false;
+                campo.classList.remove('bg-secondary', 'text-white');
+            });
+
+            // Desactivar el campo del cálculo seleccionado
+            const campoBloqueado = document.getElementById(campos[radio.value]);
+            if (campoBloqueado) {
+                campoBloqueado.disabled = true;
+                campoBloqueado.value = '';
+                campoBloqueado.classList.add('bg-secondary', 'text-white');
+            }
+        });
+    });
+</script>
+
+{% endblock %}
