@@ -123,6 +123,16 @@ def Cal_flex():
             # opcional: print(e) para debug en consola
             # print("Error Cal_flex:", e)
             error = "Error en los datos."
+            
+            
+        # Validar unidades antes de procesar
+    if unidad_tasa not in ["anual", "mensual", "diaria"]:
+        error = "Unidad de tasa no válida."
+    elif unidad_plazo not in ["años", "meses", "días"]:
+        error = "Unidad de plazo no válida."
+    else:
+        resultado = calculadora_flexible(opcion, vi, vf, r, n, unidad_tasa, unidad_plazo)
+
 
     return render_template('Cal_flex.html', resultado=resultado, error=error)
 

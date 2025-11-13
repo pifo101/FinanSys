@@ -40,51 +40,90 @@ def calcular_amortizacion(monto, tasa_mensual, plazo_meses):
 
 def calculadora_flexible(opcion, vi=None, vf=None, r=None, n=None, unidad_tasa="anual", unidad_plazo="años"):
     try:
-        # --- Conversión de tasa a mensual (como base de cálculo) ---
-        if unidad_tasa == "anual":
-            r_decimal = (1 + r / 100) ** (1 / 12) - 1
-        elif unidad_tasa == "mensual":
-            r_decimal = r / 100
-        elif unidad_tasa == "diaria":
-            r_decimal = (1 + r / 100) ** 30 - 1
-        else:
-            return "Unidad de tasa no válida."
+        # --- Monto final ---
+        if opcion == '1':
+            # Convertir tasa
+            if unidad_tasa == "anual":
+                r_decimal = (1 + r / 100) ** (1 / 12) - 1
+            elif unidad_tasa == "mensual":
+                r_decimal = r / 100
+            elif unidad_tasa == "diaria":
+                r_decimal = (1 + r / 100) ** 30 - 1
+            else:
+                return "Unidad de tasa no válida."
 
-        # --- Conversión del plazo a meses ---
-        if unidad_plazo == "años":
-            n_meses = n * 12
-        elif unidad_plazo == "meses":
-            n_meses = n
-        elif unidad_plazo == "días":
-            n_meses = n / 30
-        else:
-            return "Unidad de plazo no válida."
+            # Convertir plazo
+            if unidad_plazo == "años":
+                n_meses = n * 12
+            elif unidad_plazo == "meses":
+                n_meses = n
+            elif unidad_plazo == "días":
+                n_meses = n / 30
+            else:
+                return "Unidad de plazo no válida."
 
-        # --- Cálculos principales ---
-        if opcion == '1':  # Monto final
             resultado = vi * ((1 + r_decimal) ** n_meses)
-            texto = f"Monto final estimado: Q{resultado:.2f}"
+            return f"Monto final estimado: Q{resultado:.2f}"
 
-        elif opcion == '2':  # Monto inicial
+        # --- Monto inicial ---
+        elif opcion == '2':
+            # Misma conversión que antes
+            if unidad_tasa == "anual":
+                r_decimal = (1 + r / 100) ** (1 / 12) - 1
+            elif unidad_tasa == "mensual":
+                r_decimal = r / 100
+            elif unidad_tasa == "diaria":
+                r_decimal = (1 + r / 100) ** 30 - 1
+            else:
+                return "Unidad de tasa no válida."
+
+            if unidad_plazo == "años":
+                n_meses = n * 12
+            elif unidad_plazo == "meses":
+                n_meses = n
+            elif unidad_plazo == "días":
+                n_meses = n / 30
+            else:
+                return "Unidad de plazo no válida."
+
             resultado = vf / ((1 + r_decimal) ** n_meses)
-            texto = f"Monto inicial necesario: Q{resultado:.2f}"
+            return f"Monto inicial necesario: Q{resultado:.2f}"
 
-        elif opcion == '3':  # Rendimiento
+        # --- Rendimiento ---
+        elif opcion == '3':
+            # En este caso no importa la unidad de tasa, pero sí la del plazo
+            if unidad_plazo == "años":
+                n_meses = n * 12
+            elif unidad_plazo == "meses":
+                n_meses = n
+            elif unidad_plazo == "días":
+                n_meses = n / 30
+            else:
+                return "Unidad de plazo no válida."
+
             resultado = ((vf / vi) ** (1 / n_meses) - 1) * 100
-            texto = f"Rendimiento necesario: {resultado:.2f}% mensual equivalente"
+            return f"Rendimiento necesario: {resultado:.2f}% mensual equivalente"
 
-        elif opcion == '4':  # Tiempo
+        # --- Tiempo ---
+        elif opcion == '4':
+            # Solo importa la tasa, no el plazo
+            if unidad_tasa == "anual":
+                r_decimal = (1 + r / 100) ** (1 / 12) - 1
+            elif unidad_tasa == "mensual":
+                r_decimal = r / 100
+            elif unidad_tasa == "diaria":
+                r_decimal = (1 + r / 100) ** 30 - 1
+            else:
+                return "Unidad de tasa no válida."
+
             resultado = math.log(vf / vi) / math.log(1 + r_decimal)
-            texto = f"Tiempo estimado: {resultado:.2f} meses"
+            return f"Tiempo estimado: {resultado:.2f} meses"
 
         else:
-            texto = "Opción no válida."
-
-        return texto
+            return "Opción no válida."
 
     except Exception as e:
         return "Error en el cálculo. Verifica los datos ingresados."
-    
     
     
 
