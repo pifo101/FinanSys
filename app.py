@@ -2,88 +2,72 @@ from flask import Flask, render_template, request
 from logica import calcular_credito, calcular_amortizacion, calculadora_flexible, calcular_mora
 app = Flask(__name__)
 
-# Renderizar Página principal
+
 @app.route("/")
 def inicio():
     return render_template("index.html")
 
-# Renderizar calculadora flexible
-
-@app.route("/Cal_flex")
-def Call_cal_flex():
-    return render_template("Cal_flex.html")
-
-# Renderizar calculadora de amortización
-
-@app.route("/calculadora")
-def Call_calculadora():
-    return render_template("calculadora.html")
-
-# Renderizar calculadora de mora
-
-@app.route("/Cal_mora")
-def Call_mora():
-    return render_template("mora.html")
-
-
-# Renderizar página acerca de
-
-@app.route("/acerca")
-def Call_acerca():
-    return render_template("acerca.html")
-
 
 @app.route("/calculadora", methods=["GET", "POST"])
 def calculadora():
-    resultado = ""
+    resumen = None
+    tabla = []
+    error = None
 
     if request.method == "POST":
-        monto = float(request.form["monto"])
-        tasa = float(request.form["tasa"])
-        unidad_tasa = request.form["unidad_tasa"]
-        plazo = float(request.form["plazo"])
-        unidad_plazo = request.form["unidad_plazo"]
+        try:
+            monto = float(request.form["monto"])
+            tasa = float(request.form["tasa"])
+            unidad_tasa = request.form["unidad_tasa"]
+            plazo = float(request.form["plazo"])
+            unidad_plazo = request.form["unidad_plazo"]
 
-        # Convertimos la tasa a decimal mensual
-        if unidad_tasa == "anual":
-            tasa_mensual = (1 + tasa / 100) ** (1 / 12) - 1
-        elif unidad_tasa == "mensual":
-            tasa_mensual = tasa / 100
-        elif unidad_tasa == "diaria":
-            tasa_mensual = (1 + tasa / 100) ** 30 - 1
+            if monto <= 0:
+                raise ValueError("El monto debe ser mayor a cero.")
+            if tasa < 0:
+                raise ValueError("La tasa no puede ser negativa.")
+            if plazo <= 0:
+                raise ValueError("El plazo debe ser mayor a cero.")
 
-        # Convertimos el plazo a meses
-        if unidad_plazo == "años":
-            plazo_meses = int(plazo * 12)
-        elif unidad_plazo == "meses":
-            plazo_meses = int(plazo)
-        elif unidad_plazo == "días":
-            plazo_meses = int(plazo / 30)
+            if unidad_tasa == "anual":
+                tasa_mensual = (1 + tasa / 100) ** (1 / 12) - 1
+            elif unidad_tasa == "mensual":
+                tasa_mensual = tasa / 100
+            elif unidad_tasa == "diaria":
+                tasa_mensual = (1 + tasa / 100) ** 30 - 1
+            else:
+                raise ValueError("Unidad de tasa no válida.")
 
-        # Calculamos cuota y tabla
-        cuota, interes_total, total_pagado = calcular_credito(monto, tasa_mensual, plazo_meses)
-        tabla = calcular_amortizacion(monto, tasa_mensual, plazo_meses)
+            if unidad_plazo == "años":
+                plazo_meses = int(plazo * 12)
+            elif unidad_plazo == "meses":
+                plazo_meses = int(plazo)
+            elif unidad_plazo == "días":
+                plazo_meses = int(plazo / 30)
+            else:
+                raise ValueError("Unidad de plazo no válida.")
 
-        # Construimos el resultado en texto
-        resultado += "--------------------------------------------------\n\n"
-        resultado += "Datos ingresados\n"
-        resultado += f"Monto: Q{monto:.2f}\n"
-        resultado += f"Tasa: {tasa}% ({unidad_tasa})\n"
-        resultado += f"Plazo: {plazo} {unidad_plazo}\n\n"
+            if plazo_meses <= 0:
+                raise ValueError("El plazo debe equivaler al menos a 1 mes.")
 
-        resultado += "--------------------------------------------------\n\n"
-        resultado += "Datos obtenidos\n"
-        resultado += f"Cuota mensual: Q{cuota:.2f}\n"
-        resultado += f"Interés total: Q{interes_total:.2f}\n"
-        resultado += f"Total pagado: Q{total_pagado:.2f}\n\n"
-        resultado += "Tabla de amortización:\n"
-        resultado += "Mes   Cuota      Interés    Capital    Saldo\n"
-        resultado += "--------------------------------------------------\n"
+            cuota, interes_total, total_pagado = calcular_credito(monto, tasa_mensual, plazo_meses)
+            tabla = calcular_amortizacion(monto, tasa_mensual, plazo_meses)
+            resumen = {
+                "monto": monto,
+                "tasa": tasa,
+                "unidad_tasa": unidad_tasa,
+                "plazo": plazo,
+                "unidad_plazo": unidad_plazo,
+                "cuota": cuota,
+                "interes_total": interes_total,
+                "total_pagado": total_pagado,
+            }
+        except ValueError as e:
+            error = str(e)
+        except Exception:
+            error = "Error en los datos ingresados."
 
-        for fila in tabla:
-            resultado += f"{fila['mes']:2}   {fila['cuota']:8.2f}   {fila['interes']:8.2f}   {fila['capital']:8.2f}   {fila['saldo']:10.2f}\n"
-
-    return render_template("calculadora.html", resultado=resultado)
+    return render_template("calculadora.html", resumen=resumen, tabla=tabla, error=error)
 
 @app.route('/Cal_flex', methods=['GET', 'POST'])
 def Cal_flex():
@@ -100,13 +84,27 @@ def Cal_flex():
             unidad_tasa = request.form.get('unidad_tasa')
             unidad_plazo = request.form.get('unidad_plazo')
 
-            # convertir sólo a float o None, SIN transformar unidades aquí
+            if opcion not in ['1', '2', '3', '4']:
+                raise ValueError("Selecciona el tipo de cálculo.")
+            if unidad_tasa not in ["anual", "mensual", "diaria"]:
+                raise ValueError("Unidad de tasa no válida.")
+            if unidad_plazo not in ["años", "meses", "días"]:
+                raise ValueError("Unidad de plazo no válida.")
+
             vi = float(vi) if vi not in (None, "") else None
             vf = float(vf) if vf not in (None, "") else None
-            r = float(r) if r not in (None, "") else None    # r queda en PORCENTAJE (ej. 12)
-            n = float(n) if n not in (None, "") else None    # n queda en la unidad que eligió el usuario
+            r = float(r) if r not in (None, "") else None
+            n = float(n) if n not in (None, "") else None
 
-            # Llamada segura pasando argumentos por nombre
+            if opcion == '1' and (vi is None or r is None or n is None):
+                raise ValueError("Ingresa monto inicial, rendimiento y plazo.")
+            if opcion == '2' and (vf is None or r is None or n is None):
+                raise ValueError("Ingresa monto final, rendimiento y plazo.")
+            if opcion == '3' and (vi is None or vf is None or n is None):
+                raise ValueError("Ingresa monto inicial, monto final y plazo.")
+            if opcion == '4' and (vi is None or vf is None or r is None):
+                raise ValueError("Ingresa monto inicial, monto final y rendimiento.")
+
             resultado = calculadora_flexible(
                 opcion,
                 vi=vi,
@@ -119,19 +117,10 @@ def Cal_flex():
 
             if not resultado:
                 error = "Verifica los valores ingresados."
-        except Exception as e:
-            # opcional: print(e) para debug en consola
-            # print("Error Cal_flex:", e)
+        except ValueError as e:
+            error = str(e)
+        except Exception:
             error = "Error en los datos."
-            
-            
-        # Validar unidades antes de procesar
-    if unidad_tasa not in ["anual", "mensual", "diaria"]:
-        error = "Unidad de tasa no válida."
-    elif unidad_plazo not in ["años", "meses", "días"]:
-        error = "Unidad de plazo no válida."
-    else:
-        resultado = calculadora_flexible(opcion, vi, vf, r, n, unidad_tasa, unidad_plazo)
 
 
     return render_template('Cal_flex.html', resultado=resultado, error=error)
@@ -164,7 +153,6 @@ def Cal_mora():
 
 
 
-# Página "Acerca de"
 @app.route("/acerca")
 def acerca():
     return render_template("acerca.html")

@@ -4,8 +4,10 @@ import math
 
 # Calcula la cuota, interés total y total pagado
 def calcular_credito(monto, tasa_mensual, plazo_meses):
+    if plazo_meses <= 0:
+        raise ValueError("El plazo debe ser mayor a cero.")
+
     if tasa_mensual == 0:
-        # Evita la división entre cero
         cuota = monto / plazo_meses
         interes_total = 0
         total_pagado = monto
@@ -19,7 +21,14 @@ def calcular_credito(monto, tasa_mensual, plazo_meses):
 
 # Genera la tabla de amortización
 def calcular_amortizacion(monto, tasa_mensual, plazo_meses):
-    cuota = (monto * tasa_mensual * (1 + tasa_mensual) ** plazo_meses) / ((1 + tasa_mensual) ** plazo_meses - 1)
+    if plazo_meses <= 0:
+        raise ValueError("El plazo debe ser mayor a cero.")
+
+    if tasa_mensual == 0:
+        cuota = monto / plazo_meses
+    else:
+        cuota = (monto * tasa_mensual * (1 + tasa_mensual) ** plazo_meses) / ((1 + tasa_mensual) ** plazo_meses - 1)
+
     tabla = []
     saldo = monto
 

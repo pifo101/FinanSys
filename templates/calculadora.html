@@ -54,13 +54,72 @@
         </div>
     </form>
 
-    <!-- Resultado -->
-    {% if resultado %}
+    {% if error %}
+        <div class="alert alert-danger mt-4 text-center">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {% if resumen %}
         <div class="alert alert-success mt-4">
             <h5 class="text-center mb-3">Resultado del cálculo</h5>
-            <pre class="bg-white p-3 rounded" style="font-family: monospace; white-space: pre-wrap;">
-{{ resultado }}
-            </pre>
+
+            <div class="row text-center g-3">
+                <div class="col-md-4">
+                    <div class="bg-white rounded p-3 h-100">
+                        <strong>Cuota mensual</strong>
+                        <div class="fs-4 text-success">Q{{ "%.2f"|format(resumen.cuota) }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-white rounded p-3 h-100">
+                        <strong>Interés total</strong>
+                        <div class="fs-4 text-primary">Q{{ "%.2f"|format(resumen.interes_total) }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-white rounded p-3 h-100">
+                        <strong>Total pagado</strong>
+                        <div class="fs-4 text-dark">Q{{ "%.2f"|format(resumen.total_pagado) }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row small">
+                <div class="col-md-4"><strong>Monto:</strong> Q{{ "%.2f"|format(resumen.monto) }}</div>
+                <div class="col-md-4"><strong>Tasa:</strong> {{ resumen.tasa }}% {{ resumen.unidad_tasa }}</div>
+                <div class="col-md-4"><strong>Plazo:</strong> {{ resumen.plazo }} {{ resumen.unidad_plazo }}</div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h5 class="text-center mb-3">Tabla de amortización</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered align-middle">
+                    <thead class="table-primary text-center">
+                        <tr>
+                            <th>Mes</th>
+                            <th>Cuota</th>
+                            <th>Interés</th>
+                            <th>Capital</th>
+                            <th>Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fila in tabla %}
+                            <tr>
+                                <td class="text-center">{{ fila.mes }}</td>
+                                <td class="text-end">Q{{ "%.2f"|format(fila.cuota) }}</td>
+                                <td class="text-end">Q{{ "%.2f"|format(fila.interes) }}</td>
+                                <td class="text-end">Q{{ "%.2f"|format(fila.capital) }}</td>
+                                <td class="text-end">Q{{ "%.2f"|format(fila.saldo) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     {% endif %}
 </div>
